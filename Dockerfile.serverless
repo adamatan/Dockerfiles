@@ -1,0 +1,25 @@
+# A Dockerfile for developing using The Serverless Framework on AWS
+# Credit: Borrowed some nice ideas from Twilio Sendgrid
+# https://github.com/sendgrid/sendgrid-python/blob/v4/docker/Dockerfile
+
+FROM ubuntu:bionic
+ENV PYTHON_PACKAGES='python2.7 python3.4 python3.5 python3.6 python-pip python3-pip' \
+    APT_PACKAGES='curl jq vim zsh git iputils-ping silversearcher-ag inotify-tools less nodejs build-essential' \
+    PIP_PACKAGES='gspread oauth2client python-dateutil pylint ipython sendgrid pip'
+
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y $PYTHON_PACKAGES $APT_PACKAGES
+
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || true
+RUN sed -i'' 's/\(ZSH_THEME\)=\(".*"\)/\1="sunaku"/' /root/.zshrc
+RUN pip install --upgrade $PIP_PACKAGES
+RUN pip3 install --upgrade $PIP_PACKAGES
+
+RUN mkdir /app
+WORKDIR /app
+ENTRYPOINT /bin/zsh
+ 
+ 
+
+
