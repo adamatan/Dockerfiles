@@ -1,0 +1,8 @@
+# A Base imagemagick Dockerfile
+
+FROM adamatan-base
+ENV APT_PACKAGES='imagemagick ffmpeg'
+RUN apt-get install -y $APT_PACKAGES
+RUN rm /etc/ImageMagick-6/policy.xml
+RUN mkdir /pdfs
+WORKDIR /pdfs 
